@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>オンラインレッスン予約システム</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="app">
+      <section class="screen login-screen" data-screen="login">
+        <div class="login-panel">
+          <p class="eyebrow">Sports Club Member</p>
+          <h1>オンラインレッスン予約</h1>
+          <form id="loginForm" class="form-card">
+            <label>
+              メールアドレス
+              <input id="email" type="email" placeholder="member@example.com" required />
+            </label>
+            <label>
+              パスワード
+              <input id="password" type="password" placeholder="password" required />
+            </label>
+            <p id="loginError" class="error" role="alert"></p>
+            <button type="submit" class="primary full">ログイン</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="screen hidden" data-screen="home">
+        <header class="site-header">
+          <div>
+            <p class="eyebrow">Lesson Search</p>
+            <h1>オンラインレッスン一覧</h1>
+          </div>
+          <button id="logoutButton" class="ghost">ログアウト</button>
+        </header>
+
+        <section class="search-area" aria-label="レッスン検索">
+          <label>
+            カテゴリー
+            <select id="categoryFilter">
+              <option value="">選択してください</option>
+            </select>
+          </label>
+          <label>
+            日時
+            <input id="dateFilter" type="date" />
+          </label>
+          <label>
+            インストラクター
+            <select id="instructorFilter">
+              <option value="">選択してください</option>
+            </select>
+          </label>
+          <button id="searchButton" class="primary">検索</button>
+        </section>
+        <p id="searchMessage" class="message"></p>
+
+        <section>
+          <div class="section-title">
+            <h2 id="lessonListTitle">直近のレッスン</h2>
+            <span id="lessonCount"></span>
+          </div>
+          <div id="lessonList" class="lesson-grid"></div>
+        </section>
+      </section>
+
+      <section class="screen hidden" data-screen="detail">
+        <header class="site-header compact">
+          <div>
+            <p class="eyebrow">Lesson Detail</p>
+            <h1 id="detailTitle"></h1>
+          </div>
+        </header>
+        <article id="detailContent" class="detail-panel"></article>
+        <div class="fixed-actions">
+          <button id="detailBackButton" class="secondary">戻る</button>
+          <button id="reserveButton" class="primary">予約する</button>
+        </div>
+      </section>
+
+      <section class="screen hidden" data-screen="confirm">
+        <header class="site-header compact">
+          <div>
+            <p class="eyebrow">Reservation Confirm</p>
+            <h1>予約内容確認</h1>
+          </div>
+        </header>
+        <article id="confirmContent" class="center-panel"></article>
+        <div class="fixed-actions">
+          <button id="confirmBackButton" class="secondary">戻る</button>
+          <button id="completeButton" class="primary">予約確定</button>
+        </div>
+      </section>
+
+      <section class="screen hidden" data-screen="complete">
+        <header class="site-header compact">
+          <div>
+            <p class="eyebrow">Reservation Complete</p>
+            <h1>予約が完了しました</h1>
+          </div>
+        </header>
+        <article id="completeContent" class="center-panel"></article>
+        <div class="center-actions">
+          <button id="homeButton" class="primary">トップページへ戻る</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
