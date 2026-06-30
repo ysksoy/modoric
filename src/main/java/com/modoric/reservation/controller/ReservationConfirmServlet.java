@@ -1,7 +1,7 @@
 package com.modoric.reservation.controller;
 
 import com.modoric.reservation.model.Lesson;
-import com.modoric.reservation.model.User;
+import com.modoric.reservation.model.Member;
 import com.modoric.reservation.service.LessonService;
 import com.modoric.reservation.service.ReservationService;
 import com.modoric.reservation.service.ServiceException;
@@ -37,11 +37,11 @@ public class ReservationConfirmServlet extends HttpServlet {
             }
 
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("loginUser");
+            Member member = (Member) session.getAttribute("loginUser");
             String lessonListUrl = LessonNavigation.resolveLessonListUrl(request);
 
             // 二重予約を防ぐため、確認画面に進む前に既存予約をチェックします。
-            if (reservationService.isReserved(user.getId(), lesson.getId())) {
+            if (reservationService.isReserved(member.getId(), lesson.getId())) {
                 session.removeAttribute("selectedLesson");
                 request.setAttribute("lesson", lesson);
                 request.setAttribute("lessonListUrl", lessonListUrl);

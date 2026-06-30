@@ -1,6 +1,6 @@
 package com.modoric.reservation.controller;
 
-import com.modoric.reservation.model.User;
+import com.modoric.reservation.model.Member;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ final class SessionGuard {
 
     static boolean isLoggedIn(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("loginUser") instanceof User) {
+        if (session != null && session.getAttribute("loginUser") instanceof Member) {
             return true;
         }
 

@@ -1,7 +1,7 @@
 package com.modoric.reservation.service;
 
 import com.modoric.reservation.dao.UserDAO;
-import com.modoric.reservation.model.User;
+import com.modoric.reservation.model.Member;
 
 import java.sql.SQLException;
 
@@ -16,7 +16,7 @@ public class AuthenticationService {
         this.userDAO = userDAO;
     }
 
-    public User authenticate(String email, String password) throws ServiceException {
+    public Member authenticate(String email, String password) throws ServiceException {
         if (email == null || email.isBlank() || password == null || password.isBlank()) {
             return null;
         }
