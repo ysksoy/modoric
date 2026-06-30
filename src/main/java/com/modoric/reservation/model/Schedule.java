@@ -39,4 +39,13 @@ public class Schedule {
     public String getFormattedDate() {
         return lessonDate.format(DATE_FORMATTER);
     }
+
+    @Override
+    public String toString() {
+        return "Schedule{"
+                + "lessonDate=" + lessonDate
+                + ", timeFrame=" + timeFrame
+                + '}';
+    }
+
 }

@@ -32,4 +32,13 @@ public class LessonCategory {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "LessonCategory{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + '}';
+    }
+
 }

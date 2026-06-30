@@ -37,4 +37,13 @@ public class TimeFrame {
     public String getTimeRange() {
         return startTime.format(TIME_FORMATTER) + "-" + endTime.format(TIME_FORMATTER);
     }
+
+    @Override
+    public String toString() {
+        return "TimeFrame{"
+                + "startTime=" + startTime
+                + ", endTime=" + endTime
+                + '}';
+    }
+
 }

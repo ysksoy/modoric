@@ -23,4 +23,14 @@ public class Member {
     public String getEmail() {
         return email;
     }
+
+    @Override
+    public String toString() {
+        return "Member{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", email='" + email + '\''
+                + '}';
+    }
+
 }

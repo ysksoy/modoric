@@ -36,4 +36,15 @@ public class Reserve {
     public LocalDateTime getReservedAt() {
         return reservedAt;
     }
+
+    @Override
+    public String toString() {
+        return "Reserve{"
+                + "id=" + id
+                + ", memberId=" + memberId
+                + ", lessonId=" + lessonId
+                + ", reservedAt=" + reservedAt
+                + '}';
+    }
+
 }

@@ -144,4 +144,25 @@ public class Lesson {
     public String getTimeRange() {
         return schedule.getTimeFrame().getTimeRange();
     }
+
+    @Override
+    public String toString() {
+        return "Lesson{"
+                + "id=" + id
+                + ", lessonCategory=" + lessonCategory
+                + ", schedule=" + schedule
+                + ", title='" + title + '\''
+                + ", instructor=" + instructor
+                + ", levelName='" + levelName + '\''
+                + ", capacity=" + capacity
+                + ", description='" + description + '\''
+                + ", streamingId='" + streamingId + '\''
+                + ", streamingPassword=" + maskStreamingPassword()
+                + '}';
+    }
+
+    private String maskStreamingPassword() {
+        return streamingPassword == null ? null : "'********'";
+    }
+
 }
