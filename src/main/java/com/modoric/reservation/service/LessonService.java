@@ -1,6 +1,8 @@
 package com.modoric.reservation.service;
 
-import com.modoric.reservation.dao.ScheduleDAO;
+import com.modoric.reservation.dao.InstructorDAO;
+import com.modoric.reservation.dao.LessonCategoryDAO;
+import com.modoric.reservation.dao.LessonDAO;
 import com.modoric.reservation.model.Lesson;
 
 import java.sql.SQLException;
@@ -9,14 +11,18 @@ import java.util.List;
 public class LessonService {
     private static final int RECENT_LESSON_LIMIT = 20;
 
-    private final ScheduleDAO scheduleDAO;
+    private final LessonDAO lessonDAO;
+    private final LessonCategoryDAO lessonCategoryDAO;
+    private final InstructorDAO instructorDAO;
 
     public LessonService() {
-        this(new ScheduleDAO());
+        this(new LessonDAO(), new LessonCategoryDAO(), new InstructorDAO());
     }
 
-    LessonService(ScheduleDAO scheduleDAO) {
-        this.scheduleDAO = scheduleDAO;
+    LessonService(LessonDAO lessonDAO, LessonCategoryDAO lessonCategoryDAO, InstructorDAO instructorDAO) {
+        this.lessonDAO = lessonDAO;
+        this.lessonCategoryDAO = lessonCategoryDAO;
+        this.instructorDAO = instructorDAO;
     }
 
     public LessonSearchResult findLessons(
@@ -30,13 +36,13 @@ public class LessonService {
 
         try {
             List<Lesson> lessons = hasSearchCondition
-                    ? scheduleDAO.search(normalizedCategory, normalizedLessonDate, normalizedInstructor)
-                    : scheduleDAO.findRecent(RECENT_LESSON_LIMIT);
+                    ? lessonDAO.search(normalizedCategory, normalizedLessonDate, normalizedInstructor)
+                    : lessonDAO.findRecent(RECENT_LESSON_LIMIT);
 
             return new LessonSearchResult(
                     lessons,
-                    scheduleDAO.findCategories(),
-                    scheduleDAO.findInstructors(),
+                    lessonCategoryDAO.findNames(),
+                    instructorDAO.findNames(),
                     hasSearchCondition,
                     searchRequested && !hasSearchCondition,
                     normalizedCategory,
@@ -49,7 +55,7 @@ public class LessonService {
 
     public Lesson findById(int lessonId) throws ServiceException {
         try {
-            return scheduleDAO.findById(lessonId);
+            return lessonDAO.findById(lessonId);
         } catch (SQLException e) {
             throw new ServiceException("レッスン詳細の取得に失敗しました。", e);
         }
