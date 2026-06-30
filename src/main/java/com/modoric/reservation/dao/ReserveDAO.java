@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /** 予約情報の存在確認・登録・取得を担当するDAOクラスです。 */
-public class ReservationDAO {
+public class ReserveDAO {
     /** 指定ユーザーが指定レッスンをすでに予約しているか確認します。 */
     public boolean exists(int userId, int lessonId) throws SQLException {
         String sql = "SELECT 1 FROM reservations WHERE user_id = ? AND lesson_id = ? LIMIT 1";
