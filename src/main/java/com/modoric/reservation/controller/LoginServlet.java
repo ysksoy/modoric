@@ -12,22 +12,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
+/** ログイン画面の表示と認証処理を担当するサーブレットです。 */
 @WebServlet({"", "/login"})
 public class LoginServlet extends HttpServlet {
     private final AuthenticationService authenticationService = new AuthenticationService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // GETアクセスではログインフォームを表示します。
         request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // POSTされた日本語を正しく扱えるように文字コードを指定します。
         request.setCharacterEncoding("UTF-8");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         try {
+            // 入力された認証情報をサービス層へ渡してユーザーを確認します。
             User user = authenticationService.authenticate(email, password);
             if (user == null) {
                 request.setAttribute("error", "メールアドレスまたはパスワードが正しくありません。");
@@ -35,6 +39,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
+            // 認証済みユーザーをセッションに保存し、以降の画面でログイン状態を判定します。
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", user);
             response.sendRedirect(request.getContextPath() + "/lessons");

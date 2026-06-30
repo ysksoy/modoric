@@ -11,7 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LessonDAO {
+/** レッスン情報の検索・詳細取得・検索条件取得を担当するDAOクラスです。 */
+public class ScheduleDAO {
+    /** 開催日と開始時刻が近い順に、指定件数分のレッスンを取得します。 */
     public List<Lesson> findRecent(int limit) throws SQLException {
         String sql = """
                 SELECT *
@@ -29,7 +31,11 @@ public class LessonDAO {
         }
     }
 
+    /**
+     * 入力された検索条件だけをWHERE句に追加し、該当するレッスン一覧を取得します。
+     */
     public List<Lesson> search(String category, String lessonDate, String instructor) throws SQLException {
+        // 条件が任意のため、SQL文字列とパラメーターを同じ順番で組み立てます。
         StringBuilder sql = new StringBuilder("SELECT * FROM lessons WHERE 1 = 1");
         List<Object> params = new ArrayList<>();
 
@@ -50,6 +56,7 @@ public class LessonDAO {
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            // 追加した検索条件の順番に合わせてプレースホルダーへ値を設定します。
             for (int i = 0; i < params.size(); i++) {
                 statement.setObject(i + 1, params.get(i));
             }
@@ -60,6 +67,7 @@ public class LessonDAO {
         }
     }
 
+    /** レッスン詳細画面や予約確認画面で使う1件分のレッスンを取得します。 */
     public Lesson findById(int id) throws SQLException {
         String sql = "SELECT * FROM lessons WHERE id = ?";
 
@@ -77,14 +85,17 @@ public class LessonDAO {
         return null;
     }
 
+    /** 検索フォームのカテゴリー選択肢を取得します。 */
     public List<String> findCategories() throws SQLException {
         return findDistinctValues("category");
     }
 
+    /** 検索フォームのインストラクター選択肢を取得します。 */
     public List<String> findInstructors() throws SQLException {
         return findDistinctValues("instructor");
     }
 
+    /** 指定カラムの重複しない値を取得し、プルダウン表示に利用します。 */
     private List<String> findDistinctValues(String columnName) throws SQLException {
         String sql = "SELECT DISTINCT " + columnName + " FROM lessons ORDER BY " + columnName;
         List<String> values = new ArrayList<>();
@@ -100,6 +111,7 @@ public class LessonDAO {
         return values;
     }
 
+    /** ResultSetの全行をLessonモデルのリストへ変換します。 */
     private List<Lesson> mapLessons(ResultSet rs) throws SQLException {
         List<Lesson> lessons = new ArrayList<>();
         while (rs.next()) {
@@ -108,6 +120,7 @@ public class LessonDAO {
         return lessons;
     }
 
+    /** ResultSetの現在行をLessonモデルへ変換します。 */
     private Lesson mapLesson(ResultSet rs) throws SQLException {
         Lesson lesson = new Lesson();
         lesson.setId(rs.getInt("id"));
@@ -125,6 +138,7 @@ public class LessonDAO {
         return lesson;
     }
 
+    /** nullまたは空白だけの文字列を検索条件として扱わないための判定です。 */
     private boolean hasText(String value) {
         return value != null && !value.isBlank();
     }

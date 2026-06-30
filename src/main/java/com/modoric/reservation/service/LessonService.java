@@ -1,6 +1,6 @@
 package com.modoric.reservation.service;
 
-import com.modoric.reservation.dao.LessonDAO;
+import com.modoric.reservation.dao.ScheduleDAO;
 import com.modoric.reservation.model.Lesson;
 
 import java.sql.SQLException;
@@ -9,14 +9,14 @@ import java.util.List;
 public class LessonService {
     private static final int RECENT_LESSON_LIMIT = 20;
 
-    private final LessonDAO lessonDAO;
+    private final ScheduleDAO scheduleDAO;
 
     public LessonService() {
-        this(new LessonDAO());
+        this(new ScheduleDAO());
     }
 
-    LessonService(LessonDAO lessonDAO) {
-        this.lessonDAO = lessonDAO;
+    LessonService(ScheduleDAO scheduleDAO) {
+        this.scheduleDAO = scheduleDAO;
     }
 
     public LessonSearchResult findLessons(
@@ -30,13 +30,13 @@ public class LessonService {
 
         try {
             List<Lesson> lessons = hasSearchCondition
-                    ? lessonDAO.search(normalizedCategory, normalizedLessonDate, normalizedInstructor)
-                    : lessonDAO.findRecent(RECENT_LESSON_LIMIT);
+                    ? scheduleDAO.search(normalizedCategory, normalizedLessonDate, normalizedInstructor)
+                    : scheduleDAO.findRecent(RECENT_LESSON_LIMIT);
 
             return new LessonSearchResult(
                     lessons,
-                    lessonDAO.findCategories(),
-                    lessonDAO.findInstructors(),
+                    scheduleDAO.findCategories(),
+                    scheduleDAO.findInstructors(),
                     hasSearchCondition,
                     searchRequested && !hasSearchCondition,
                     normalizedCategory,
@@ -49,7 +49,7 @@ public class LessonService {
 
     public Lesson findById(int lessonId) throws ServiceException {
         try {
-            return lessonDAO.findById(lessonId);
+            return scheduleDAO.findById(lessonId);
         } catch (SQLException e) {
             throw new ServiceException("レッスン詳細の取得に失敗しました。", e);
         }
