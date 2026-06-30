@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** レッスン情報の検索・詳細取得・検索条件取得を担当するDAOクラスです。 */
-public class LessonDAO {
+public class ScheduleDAO {
     /** 開催日と開始時刻が近い順に、指定件数分のレッスンを取得します。 */
     public List<Lesson> findRecent(int limit) throws SQLException {
         String sql = """
