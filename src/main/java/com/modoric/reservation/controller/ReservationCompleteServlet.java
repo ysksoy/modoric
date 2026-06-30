@@ -1,8 +1,8 @@
 package com.modoric.reservation.controller;
 
 import com.modoric.reservation.model.Lesson;
-import com.modoric.reservation.model.Reservation;
-import com.modoric.reservation.model.User;
+import com.modoric.reservation.model.Reserve;
+import com.modoric.reservation.model.Member;
 import com.modoric.reservation.service.DuplicateReservationException;
 import com.modoric.reservation.service.ReservationService;
 import com.modoric.reservation.service.ServiceException;
@@ -28,7 +28,7 @@ public class ReservationCompleteServlet extends HttpServlet {
         }
 
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("loginUser");
+        Member member = (Member) session.getAttribute("loginUser");
         Lesson lesson = (Lesson) session.getAttribute("selectedLesson");
 
         // 確認画面を経由していない場合は予約対象がないため、一覧へ戻します。
@@ -39,9 +39,9 @@ public class ReservationCompleteServlet extends HttpServlet {
 
         try {
             // サービス層で重複確認を行ったうえで予約を登録します。
-            Reservation reservation = reservationService.reserve(user.getId(), lesson.getId());
+            Reserve reserve = reservationService.reserve(member.getId(), lesson.getId());
             request.setAttribute("lesson", lesson);
-            request.setAttribute("reservation", reservation);
+            request.setAttribute("reservation", reserve);
             // 登録後は再送信で同じ予約が作られないよう、選択中レッスンを削除します。
             session.removeAttribute("selectedLesson");
             request.getRequestDispatcher("/WEB-INF/views/reservation-complete.jsp").forward(request, response);

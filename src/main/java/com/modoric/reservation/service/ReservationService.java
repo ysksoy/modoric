@@ -1,7 +1,7 @@
 package com.modoric.reservation.service;
 
 import com.modoric.reservation.dao.ReserveDAO;
-import com.modoric.reservation.model.Reservation;
+import com.modoric.reservation.model.Reserve;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ public class ReservationService {
         }
     }
 
-    public Reservation reserve(int userId, int lessonId)
+    public Reserve reserve(int userId, int lessonId)
             throws DuplicateReservationException, ServiceException {
         try {
             return reserveDAO.create(userId, lessonId);

@@ -1,6 +1,6 @@
 package com.modoric.reservation.dao;
 
-import com.modoric.reservation.model.Reservation;
+import com.modoric.reservation.model.Reserve;
 import com.modoric.reservation.util.DBUtil;
 
 import java.sql.Connection;
@@ -30,7 +30,7 @@ public class ReserveDAO {
     /**
      * 予約レコードを登録し、自動採番されたIDを使って登録後の予約情報を返します。
      */
-    public Reservation create(int userId, int lessonId) throws SQLException {
+    public Reserve create(int userId, int lessonId) throws SQLException {
         String insertSql = "INSERT INTO reservations (user_id, lesson_id) VALUES (?, ?)";
 
         try (Connection connection = DBUtil.getConnection();
@@ -51,7 +51,7 @@ public class ReserveDAO {
     }
 
     /** 同じコネクションを使って、登録済み予約の詳細情報を取得します。 */
-    private Reservation findById(Connection connection, int id) throws SQLException {
+    private Reserve findById(Connection connection, int id) throws SQLException {
         String sql = "SELECT id, user_id, lesson_id, reserved_at FROM reservations WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -59,7 +59,7 @@ public class ReserveDAO {
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    return new Reservation(
+                    return new Reserve(
                             rs.getInt("id"),
                             rs.getInt("user_id"),
                             rs.getInt("lesson_id"),

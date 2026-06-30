@@ -2,21 +2,13 @@ package com.modoric.reservation.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 public class Lesson {
-    private static final DateTimeFormatter DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy年M月d日(E)", Locale.JAPANESE);
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-
     private int id;
-    private String category;
-    private LocalDate lessonDate;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LessonCategory lessonCategory = new LessonCategory();
+    private Schedule schedule = new Schedule();
     private String title;
-    private String instructor;
+    private Instructor instructor = new Instructor();
     private String levelName;
     private int capacity;
     private String description;
@@ -31,36 +23,53 @@ public class Lesson {
         this.id = id;
     }
 
+    public LessonCategory getLessonCategory() {
+        return lessonCategory;
+    }
+
+    public void setLessonCategory(LessonCategory lessonCategory) {
+        this.lessonCategory = lessonCategory;
+    }
+
+    /** JSPの既存プロパティ名と検索条件に合わせてカテゴリー名を返します。 */
     public String getCategory() {
-        return category;
+        return lessonCategory.getName();
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.lessonCategory = new LessonCategory(category);
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
     public LocalDate getLessonDate() {
-        return lessonDate;
+        return schedule.getLessonDate();
     }
 
     public void setLessonDate(LocalDate lessonDate) {
-        this.lessonDate = lessonDate;
+        schedule.setLessonDate(lessonDate);
     }
 
     public LocalTime getStartTime() {
-        return startTime;
+        return schedule.getTimeFrame().getStartTime();
     }
 
     public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
+        schedule.getTimeFrame().setStartTime(startTime);
     }
 
     public LocalTime getEndTime() {
-        return endTime;
+        return schedule.getTimeFrame().getEndTime();
     }
 
     public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+        schedule.getTimeFrame().setEndTime(endTime);
     }
 
     public String getTitle() {
@@ -71,12 +80,21 @@ public class Lesson {
         this.title = title;
     }
 
-    public String getInstructor() {
+    public Instructor getInstructorInfo() {
         return instructor;
     }
 
-    public void setInstructor(String instructor) {
+    public void setInstructorInfo(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    /** JSPの既存プロパティ名と検索条件に合わせて講師名を返します。 */
+    public String getInstructor() {
+        return instructor.getName();
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = new Instructor(instructor);
     }
 
     public String getLevelName() {
@@ -120,10 +138,10 @@ public class Lesson {
     }
 
     public String getFormattedDate() {
-        return lessonDate.format(DATE_FORMATTER);
+        return schedule.getFormattedDate();
     }
 
     public String getTimeRange() {
-        return startTime.format(TIME_FORMATTER) + "-" + endTime.format(TIME_FORMATTER);
+        return schedule.getTimeFrame().getTimeRange();
     }
 }

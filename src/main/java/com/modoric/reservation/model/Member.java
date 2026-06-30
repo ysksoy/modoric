@@ -1,11 +1,12 @@
 package com.modoric.reservation.model;
 
-public class User {
+/** 予約システムを利用する会員を表すエンティティです。 */
+public class Member {
     private final int id;
     private final String name;
     private final String email;
 
-    public User(int id, String name, String email) {
+    public Member(int id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;

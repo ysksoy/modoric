@@ -1,6 +1,6 @@
 package com.modoric.reservation.dao;
 
-import com.modoric.reservation.model.User;
+import com.modoric.reservation.model.Member;
 import com.modoric.reservation.util.DBUtil;
 
 import java.sql.Connection;
@@ -14,7 +14,7 @@ public class UserDAO {
      * 入力されたメールアドレスとパスワードに一致するユーザーを検索します。
      * 一致するレコードがない場合は、ログイン失敗を表すためにnullを返します。
      */
-    public User authenticate(String email, String password) throws SQLException {
+    public Member authenticate(String email, String password) throws SQLException {
         String sql = "SELECT id, name, email FROM users WHERE email = ? AND password = ?";
 
         try (Connection connection = DBUtil.getConnection();
@@ -26,7 +26,7 @@ public class UserDAO {
             try (ResultSet rs = statement.executeQuery()) {
                 // 認証に必要な最小限のユーザー情報だけをモデルへ詰め替えます。
                 if (rs.next()) {
-                    return new User(
+                    return new Member(
                             rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("email")
