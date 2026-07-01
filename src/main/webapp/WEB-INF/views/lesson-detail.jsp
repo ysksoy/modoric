@@ -1,5 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%!
+  private String h(String value) {
+    if (value == null) {
+      return "";
+    }
+    return value.replace("&", "&amp;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;");
+  }
+%>
 <!doctype html>
 <html lang="ja">
   <head>
@@ -36,10 +43,10 @@
       </article>
 
       <div class="fixed-actions">
-        <a class="button secondary" href="<c:out value="${lessonListUrl}" />">戻る</a>
+        <a class="button secondary" href="<%= h((String) request.getAttribute("lessonListUrl")) %>">戻る</a>
         <form action="${pageContext.request.contextPath}/reservation-confirm" method="post">
           <input type="hidden" name="lessonId" value="${lesson.id}" />
-          <input type="hidden" name="returnTo" value="<c:out value="${lessonListUrl}" />" />
+          <input type="hidden" name="returnTo" value="<%= h((String) request.getAttribute("lessonListUrl")) %>" />
           <button type="submit" class="primary">予約する</button>
         </form>
       </div>

@@ -1,5 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="com.modoric.reservation.model.Lesson" %>
+<%!
+  private String h(String value) {
+    if (value == null) {
+      return "";
+    }
+    return value.replace("&", "&amp;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;");
+  }
+%>
 <!doctype html>
 <html lang="ja">
   <head>
@@ -28,13 +38,15 @@
       </article>
 
       <div class="fixed-actions">
-        <c:url var="lessonDetailUrl" value="/lesson-detail">
-          <c:param name="id" value="${lesson.id}" />
-          <c:param name="returnTo" value="${lessonListUrl}" />
-        </c:url>
-        <a class="button secondary" href="<c:out value="${lessonDetailUrl}" />">戻る</a>
+        <%
+          String lessonListUrl = (String) request.getAttribute("lessonListUrl");
+          Lesson lessonForUrl = (Lesson) request.getAttribute("lesson");
+          String lessonDetailUrl = request.getContextPath() + "/lesson-detail?id=" + lessonForUrl.getId()
+              + "&returnTo=" + URLEncoder.encode(lessonListUrl == null ? "" : lessonListUrl, StandardCharsets.UTF_8);
+        %>
+        <a class="button secondary" href="<%= h(lessonDetailUrl) %>">戻る</a>
         <form action="${pageContext.request.contextPath}/reservation-complete" method="post">
-          <input type="hidden" name="returnTo" value="<c:out value="${lessonListUrl}" />" />
+          <input type="hidden" name="returnTo" value="<%= h(lessonListUrl) %>" />
           <button type="submit" class="primary">予約確定</button>
         </form>
       </div>
